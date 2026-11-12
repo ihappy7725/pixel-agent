@@ -1,0 +1,347 @@
+/* BridgeNote — 뉴욕 트레이드타워 픽셀 · 복셀 오피스 테마 (2단계)
+   레퍼런스: assets/1~4.jpeg
+   - 2번 복셀 타일: 밝은 윗면 + 진한 앞면 + 더 진한 오른쪽 면 = 두께감
+   - 3번 코지 오피스: 파스텔 퍼플 벽 · 호두나무 책상
+   - 4번 뉴욕 거리: 스카이 블루 · 라임스톤 베이지 · 벽돌 · 성조기 레드/네이비 · 택시 옐로우
+   화면 모양만 바꿔요. 기능 · 문구는 app.py 그대로예요. */
+@import url("https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css");
+
+:root {
+  /* 밤하늘 (2번 배경) → 보랏빛 저녁 (3번 벽) */
+  --night: #0D0E33;
+  --night-2: #1B1A4A;
+  --dusk: #3A2C6E;
+  /* 사무실 칸 (윗면 / 앞면 / 오른쪽 면) */
+  --room: #29245E;
+  --room-side: #1A1645;
+  --room-dark: #110E33;
+  /* 파스텔 퍼플 (3번) */
+  --lav: #B9A6EE;
+  --lav-side: #8A73D1;
+  --lav-dark: #5E4BA8;
+  --lav-light: #DCD0FF;
+  /* 뉴욕 (4번) */
+  --taxi: #F7B731;  --taxi-side: #D18E12;  --taxi-dark: #9C6508;
+  --sky: #5B9BE6;   --sky-side: #3867D6;   --sky-dark: #24479E;
+  --red: #E0414F;   --red-side: #B02A3B;   --red-dark: #7E1C2B;
+  --flag-navy: #2B3770;
+  --stone: #F1E4C8; --stone-side: #D4BE93; --stone-dark: #A88E62;
+  --brick: #B8573D; --brick-side: #8C3E2A;
+  --wood: #A86B45;  --wood-side: #7A4A2D;
+  /* 글자 */
+  --ink: #1E1838;       /* 밝은 블록 위 글자 */
+  --light: #F5EEFF;     /* 어두운 칸 위 글자 */
+  --muted: #B3A9D6;
+  --depth: 6px;         /* 블록 두께 */
+  --r: 6px;             /* 1 · 2번처럼 살짝 둥근 모서리 */
+}
+
+/* ---------- 글꼴: 한국어 픽셀 폰트 Galmuri ---------- */
+html, body, .stApp, .stApp *:not([data-testid="stIconMaterial"]):not(.material-symbols-rounded) {
+  font-family: "Galmuri11", "Galmuri9", "DungGeunMo", monospace !important;
+  letter-spacing: 0;
+}
+.stApp code, .stApp pre, .stApp pre * { font-family: "GalmuriMono11", "Galmuri11", monospace !important; }
+
+/* ---------- 배경: 2번의 남색 밤하늘 → 3번의 보랏빛 + 픽셀 스카이라인 ---------- */
+.stApp {
+  background-color: var(--night);
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.55) 50%, transparent 51%),
+    radial-gradient(1px 1px at 68% 9%, rgba(255,255,255,.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 84% 31%, rgba(255,255,255,.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 33% 42%, rgba(255,255,255,.35) 50%, transparent 51%),
+    linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(180deg, var(--night) 0%, var(--night-2) 50%, var(--dusk) 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 16px 16px, 16px 16px, 100% 100%;
+  background-attachment: fixed;
+  color: var(--light);
+}
+/* 화면 아래 빌딩 — 라임스톤 · 벽돌 · 보라 그림자 + 창문 불빛 + 택시 (장식, 클릭 안 됨) */
+.stApp::after {
+  content: "";
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 150px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .5;
+  image-rendering: pixelated;
+  background-repeat: repeat-x;
+  background-position: bottom left;
+  background-size: 480px 150px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='38' shape-rendering='crispEdges'><g fill='%23281F55'><rect x='0' y='16' width='14' height='22'/><rect x='50' y='22' width='8' height='16'/><rect x='84' y='20' width='10' height='18'/></g><g fill='%235A3A5C'><rect x='14' y='8' width='12' height='30'/><rect x='68' y='14' width='16' height='24'/></g><g fill='%23726377'><rect x='26' y='20' width='10' height='18'/><rect x='94' y='10' width='12' height='28'/></g><g fill='%23403070'><rect x='36' y='12' width='14' height='26'/><rect x='106' y='18' width='14' height='20'/></g><g fill='%238A7A88'><rect x='58' y='6' width='10' height='32'/><rect x='60' y='3' width='6' height='3'/><rect x='62' y='0' width='2' height='3'/></g><g fill='%23F7B731'><rect x='3' y='20' width='2' height='2'/><rect x='8' y='26' width='2' height='2'/><rect x='17' y='12' width='2' height='2'/><rect x='21' y='18' width='2' height='2'/><rect x='39' y='16' width='2' height='2'/><rect x='44' y='22' width='2' height='2'/><rect x='61' y='10' width='2' height='2'/><rect x='64' y='18' width='2' height='2'/><rect x='72' y='18' width='2' height='2'/><rect x='78' y='24' width='2' height='2'/><rect x='97' y='14' width='2' height='2'/><rect x='110' y='22' width='2' height='2'/></g><g fill='%23DCD0FF'><rect x='29' y='24' width='2' height='2'/><rect x='101' y='26' width='2' height='2'/><rect x='87' y='26' width='2' height='2'/></g><rect x='40' y='35' width='6' height='2' fill='%23F7B731'/><rect x='41' y='34' width='3' height='1' fill='%23F7B731'/><rect x='92' y='35' width='6' height='2' fill='%23F7B731'/><rect x='93' y='34' width='3' height='1' fill='%23F7B731'/></svg>");
+}
+[data-testid="stHeader"] { background: transparent; }
+[data-testid="stMainBlockContainer"] { position: relative; z-index: 1; padding-bottom: 170px; }
+
+/* ---------- 헤더: 택시 옐로우 복셀 간판 ---------- */
+.stApp h1 {
+  display: inline-block;
+  font-family: "Galmuri14", "Galmuri11", monospace !important;
+  font-size: 2.2rem;
+  color: var(--ink);
+  background: linear-gradient(180deg, #FFD15C 0%, var(--taxi) 60%);
+  padding: 10px 22px 6px;
+  border: 3px solid var(--taxi-dark);
+  border-radius: var(--r);
+  box-shadow:
+    inset 0 3px 0 rgba(255,255,255,.5),
+    0 8px 0 var(--taxi-side),
+    4px 8px 0 var(--taxi-dark),
+    6px 18px 18px rgba(4,4,25,.55);
+  text-shadow: 2px 2px 0 rgba(255,255,255,.4);
+  margin-bottom: 12px;
+}
+.stApp h1 a { display: none; }
+[data-testid="stCaptionContainer"], .stApp .stCaption, .stApp small { color: var(--muted) !important; }
+
+/* ---------- 탭: 층마다 색이 다른 복셀 블록 ---------- */
+[data-testid="stTabs"] [role="tablist"] {
+  gap: 10px;
+  border-bottom: none;
+  padding: 6px 4px 14px;
+  flex-wrap: wrap;
+}
+[data-testid="stTab"] > div:not([data-testid]) { display: none; }
+[data-testid="stTabs"] [data-testid="stTab"] {
+  --c: var(--taxi); --c-side: var(--taxi-side); --c-dark: var(--taxi-dark); --c-ink: var(--ink);
+  background: var(--room);
+  color: var(--light);
+  border: 2px solid var(--room-dark);
+  border-radius: var(--r);
+  padding: 8px 14px 6px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.08),
+    inset 0 -4px 0 var(--c),
+    0 4px 0 var(--room-side),
+    3px 4px 0 var(--room-dark),
+    3px 9px 10px rgba(4,4,25,.45);
+  transition: transform .08s steps(2), box-shadow .08s steps(2);
+}
+[data-testid="stTabs"] [data-testid="stTab"]:nth-of-type(2) { --c: var(--sky);   --c-side: var(--sky-side);   --c-dark: var(--sky-dark);   --c-ink: #fff; }
+[data-testid="stTabs"] [data-testid="stTab"]:nth-of-type(3) { --c: var(--red);   --c-side: var(--red-side);   --c-dark: var(--red-dark);   --c-ink: #fff; }
+[data-testid="stTabs"] [data-testid="stTab"]:nth-of-type(4) { --c: var(--lav);   --c-side: var(--lav-side);   --c-dark: var(--lav-dark); }
+[data-testid="stTabs"] [data-testid="stTab"]:nth-of-type(5) { --c: var(--stone); --c-side: var(--stone-side); --c-dark: var(--stone-dark); }
+[data-testid="stTabs"] [data-testid="stTab"]:hover { transform: translateY(-2px); color: var(--light); }
+[data-testid="stTabs"] [data-testid="stTab"][aria-selected="true"] {
+  background: var(--c);
+  color: var(--c-ink);
+  border-color: var(--c-dark);
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 3px 0 rgba(255,255,255,.45),
+    0 8px 0 var(--c-side),
+    3px 8px 0 var(--c-dark),
+    4px 16px 14px rgba(4,4,25,.55);
+}
+[data-testid="stTabs"] [data-testid="stTab"] p { font-size: .95rem; color: inherit; }
+[data-testid="stTabPanel"] { padding-top: 18px; }
+
+/* ---------- 카드: 공중에 떠 있는 사무실 바닥 타일 (2번 디오라마) ---------- */
+[data-testid="stForm"], [data-testid="stExpander"] details {
+  background:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px) 0 0 / 100% 24px,
+    linear-gradient(180deg, #312B6B 0%, var(--room) 100%);
+  border: 2px solid var(--room-dark) !important;
+  border-radius: 10px !important;
+  box-shadow:
+    inset 0 3px 0 rgba(220,208,255,.18),
+    inset 3px 0 0 rgba(220,208,255,.06),
+    0 10px 0 var(--room-side),
+    5px 10px 0 var(--room-dark),
+    0 10px 0 2px var(--room-dark),
+    8px 26px 26px rgba(4,4,25,.6);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+[data-testid="stExpander"] details { padding: 0; overflow: hidden; }
+[data-testid="stExpander"] summary { background: rgba(185,166,238,.12); border-bottom: 2px solid var(--room-dark); }
+[data-testid="stExpander"] summary:hover { color: var(--taxi); }
+
+/* ---------- 라벨 ---------- */
+[data-testid="stWidgetLabel"] p { color: var(--lav-light) !important; font-size: .9rem; }
+
+/* ---------- 입력창: 라임스톤 블록 안에 파인 홈 ---------- */
+[data-testid="stTextInputRootElement"],
+[data-testid="stTextAreaRootElement"],
+[data-testid="stSelectbox"] div:has(> input[role="combobox"]) {
+  background: var(--stone) !important;
+  border: 2px solid var(--stone-dark) !important;
+  border-radius: var(--r) !important;
+  box-shadow:
+    inset 0 3px 0 rgba(120,90,50,.22),
+    inset 3px 0 0 rgba(120,90,50,.1),
+    0 5px 0 var(--stone-side),
+    3px 5px 0 var(--stone-dark),
+    3px 11px 10px rgba(4,4,25,.45);
+  margin-bottom: 6px;
+}
+[data-testid="stTextInputRootElement"]:focus-within,
+[data-testid="stTextAreaRootElement"]:focus-within,
+[data-testid="stSelectbox"] div:has(> input[role="combobox"]):focus-within {
+  border-color: var(--sky-side) !important;
+  box-shadow:
+    inset 0 3px 0 rgba(120,90,50,.22),
+    0 0 0 3px rgba(91,155,230,.45),
+    0 5px 0 var(--stone-side),
+    3px 5px 0 var(--stone-dark),
+    3px 11px 10px rgba(4,4,25,.45);
+}
+[data-testid="stTextInputRootElement"] input,
+[data-testid="stSelectbox"] input[role="combobox"],
+[data-testid="stTextAreaRootElement"] textarea {
+  background: transparent !important;
+  color: var(--ink) !important;
+  -webkit-text-fill-color: var(--ink);
+  caret-color: var(--red);
+}
+[data-testid="stSelectbox"] svg { color: var(--wood-side); fill: var(--wood-side); }
+.stApp input::placeholder, .stApp textarea::placeholder { color: #9C8763 !important; -webkit-text-fill-color: #9C8763; }
+
+/* ---------- 라디오: 사막 타일처럼 쌓인 블록 (2번) ---------- */
+[data-testid="stRadio"] [role="radiogroup"] { gap: 12px 10px; flex-wrap: wrap; padding-bottom: 6px; }
+[data-testid="stRadio"] label[data-testid="stRadioOption"] {
+  background: var(--stone);
+  color: var(--ink);
+  border: 2px solid var(--stone-dark);
+  border-radius: var(--r);
+  padding: 6px 12px 5px 8px;
+  margin: 0 !important;
+  cursor: pointer;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.6),
+    0 5px 0 var(--stone-side),
+    3px 5px 0 var(--stone-dark),
+    3px 10px 8px rgba(4,4,25,.4);
+  transition: transform .06s steps(2), box-shadow .06s steps(2);
+}
+[data-testid="stRadio"] label[data-testid="stRadioOption"] p { color: var(--ink) !important; }
+[data-testid="stRadio"] label[data-testid="stRadioOption"]:hover { transform: translateY(-2px); background: #FFF3DA; }
+[data-testid="stRadio"] label[data-testid="stRadioOption"] > div > div:first-child {
+  border-radius: 2px !important;
+  width: 14px !important; height: 14px !important;
+  border: 2px solid var(--stone-dark) !important;
+  background: #fff !important;
+  box-shadow: inset 0 -3px 0 rgba(120,90,50,.18) !important;
+}
+[data-testid="stRadio"] label[data-testid="stRadioOption"] > div > div:first-child > div { display: none; }
+/* 고르면: 스카이 블루 블록이 눌려 내려가요 */
+[data-testid="stRadio"] label[data-testid="stRadioOption"]:has(input:checked) {
+  background: var(--sky);
+  border-color: var(--sky-dark);
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.35),
+    0 2px 0 var(--sky-side),
+    2px 2px 0 var(--sky-dark),
+    2px 5px 5px rgba(4,4,25,.4);
+}
+[data-testid="stRadio"] label[data-testid="stRadioOption"]:has(input:checked) p { color: #fff !important; }
+[data-testid="stRadio"] label[data-testid="stRadioOption"]:has(input:checked) > div > div:first-child {
+  background: var(--taxi) !important;
+  border-color: var(--taxi-dark) !important;
+}
+
+/* ---------- 버튼: 두께 있는 복셀 블록 ---------- */
+.stApp [data-testid^="stBaseButton"] {
+  --c: var(--sky); --c-side: var(--sky-side); --c-dark: var(--sky-dark); --c-ink: #fff;
+  font-family: "Galmuri11", monospace !important;
+  border: 2px solid var(--c-dark) !important;
+  border-radius: var(--r) !important;
+  padding: 8px 24px 6px !important;
+  color: var(--c-ink) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,0) 55%), var(--c) !important;
+  box-shadow:
+    inset 0 3px 0 rgba(255,255,255,.4),
+    0 7px 0 var(--c-side),
+    4px 7px 0 var(--c-dark),
+    5px 15px 14px rgba(4,4,25,.5) !important;
+  margin-bottom: 8px;
+  transition: transform .05s steps(1), box-shadow .05s steps(1);
+}
+.stApp [data-testid^="stBaseButton"] p { font-size: 1rem; color: inherit !important; }
+/* '저장' · '번역하기' 같은 주요 버튼은 택시 옐로우 */
+.stApp [data-testid="stBaseButton-primary"],
+.stApp [data-testid="stBaseButton-primaryFormSubmit"],
+.stApp [data-testid="stBaseButton-secondaryFormSubmit"] {
+  --c: var(--taxi); --c-side: var(--taxi-side); --c-dark: var(--taxi-dark); --c-ink: var(--ink);
+}
+.stApp [data-testid^="stBaseButton"]:hover { filter: brightness(1.06); transform: translateY(-2px); }
+.stApp [data-testid^="stBaseButton"]:active {
+  transform: translateY(6px);
+  box-shadow:
+    inset 0 3px 0 rgba(0,0,0,.18),
+    0 1px 0 var(--c-side),
+    1px 1px 0 var(--c-dark),
+    1px 3px 4px rgba(4,4,25,.5) !important;
+}
+.stApp [data-testid^="stBaseButton"]:focus-visible { outline: 3px dashed var(--red); outline-offset: 4px; }
+/* 표 위 작은 도구 아이콘 · 오른쪽 위 메뉴 버튼은 블록 모양에서 빼요 */
+.stApp [data-testid="stBaseButton-elementToolbar"],
+.stApp [data-testid="stBaseButton-header"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 4px 8px !important;
+  margin: 0;
+  color: var(--light) !important;
+  transform: none !important;
+}
+.stApp [data-testid="stBaseButton-elementToolbar"]:hover,
+.stApp [data-testid="stBaseButton-header"]:hover { color: var(--taxi) !important; }
+
+/* ---------- 표: 호두나무 책상 위 라임스톤 명단 (3 · 4번) ---------- */
+[data-testid="stDataFrame"], [data-testid="stTable"] {
+  border: 2px solid var(--wood-side);
+  border-radius: var(--r);
+  background: var(--wood);
+  padding: 6px;
+  box-shadow:
+    inset 0 3px 0 rgba(255,255,255,.2),
+    0 9px 0 var(--wood-side),
+    5px 9px 0 #4E2E1C,
+    8px 24px 22px rgba(4,4,25,.6);
+  margin-bottom: 20px;
+}
+[data-testid="stTable"] table { border-collapse: separate; border-spacing: 0; width: 100%; border-radius: 4px; overflow: hidden; }
+[data-testid="stTable"] th {
+  background: var(--flag-navy) !important;
+  color: #fff !important;
+  border: none !important;
+  border-bottom: 4px solid var(--red) !important;
+  font-weight: normal;
+}
+[data-testid="stTable"] td {
+  background: var(--stone);
+  color: var(--ink) !important;
+  border: none !important;
+  border-bottom: 2px solid var(--stone-side) !important;
+}
+[data-testid="stTable"] th, [data-testid="stTable"] td:not(:nth-child(2)) { white-space: nowrap; }
+[data-testid="stTable"] tbody tr:nth-child(even) td { background: #E8D8B6; }
+[data-testid="stTable"] tbody tr:hover td { background: #FFE8A3; }
+
+/* ---------- 안내 · 에러 상자 ---------- */
+[data-testid="stAlert"] > div {
+  border-radius: var(--r) !important;
+  border: 2px solid rgba(0,0,0,.35);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.12), 0 5px 0 rgba(0,0,0,.35), 3px 12px 12px rgba(4,4,25,.45);
+}
+
+/* ---------- 요청문 코드 상자: 3번 모니터 화면 ---------- */
+[data-testid="stCode"] pre, .stApp pre {
+  border-radius: var(--r) !important;
+  border: 3px solid #2A2840;
+  background: #161528 !important;
+  box-shadow: inset 0 0 0 2px #3B3960, 0 7px 0 #2A2840, 4px 7px 0 #14132A, 6px 18px 16px rgba(4,4,25,.55);
+}
+
+/* ---------- 휴대폰 폭 ---------- */
+@media (max-width: 640px) {
+  .stApp h1 { font-size: 1.6rem; padding: 8px 14px 4px; }
+  [data-testid="stTabs"] [data-testid="stTab"] { padding: 6px 10px 4px; }
+  [data-testid="stForm"] { padding: 14px; }
+  .stApp::after { height: 100px; background-size: 320px 100px; }
+}

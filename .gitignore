@@ -1,0 +1,10 @@
+# API 키 — 절대 올리지 않기 (CLAUDE.md 2번)
+.env
+.streamlit/secrets.toml
+
+# 내 기록 사본
+data/backup/
+
+# 파이썬 · 테스트 임시 파일
+__pycache__/
+.pytest_cache/

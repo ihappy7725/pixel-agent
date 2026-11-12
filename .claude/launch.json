@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "bridgenote",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "streamlit",
+        "run",
+        "app.py",
+        "--server.headless",
+        "true",
+        "--server.port",
+        "8601"
+      ],
+      "port": 8601
+    },
+    {
+      "name": "bridgenote-2",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "streamlit",
+        "run",
+        "app.py",
+        "--server.headless",
+        "true",
+        "--server.port",
+        "8602"
+      ],
+      "port": 8602
+    }
+  ]
+}

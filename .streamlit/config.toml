@@ -1,0 +1,7 @@
+# 화면 색 — 뉴욕 트레이드타워 픽셀 오피스 (자세한 모양은 theme.css, 레퍼런스는 assets/)
+[theme]
+base = "dark"
+primaryColor = "#F7B731"            # 택시 옐로우
+backgroundColor = "#0D0E33"         # 밤하늘 남색 (2번)
+secondaryBackgroundColor = "#29245E" # 보랏빛 사무실 (3번)
+textColor = "#F5EEFF"
