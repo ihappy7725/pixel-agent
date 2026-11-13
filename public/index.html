@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>다리말 BridgeNote</title>
+  <meta name="description" content="상대에 맞는 말투로 외국어 이메일 · 채팅 쓰기 — 영어 · 중국어 · 일본어">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23F7B731'/><rect x='2' y='9' width='12' height='2' fill='%231E1838'/><rect x='3' y='5' width='2' height='4' fill='%231E1838'/><rect x='11' y='5' width='2' height='4' fill='%231E1838'/></svg>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1 class="logo">BridgeNote</h1>
+      <p class="sub">다리말 · 상대에 맞는 말투로 외국어 이메일 · 채팅 쓰기</p>
+      <p class="notice">🧪 시연용 사이트예요. 기록은 <b>이 브라우저에만</b> 저장되고 다른 사람과 섞이지 않아요.
+        AI 번역은 <b>하루 <span id="ai-limit">3</span>번</b>까지예요. 번역할 글은 Google Gemini로 보내지니 <b>실제 회사 · 개인 정보는 넣지 마세요.</b></p>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="t1" class="on">👤 상대방 카드</button>
+      <button role="tab" data-tab="t2">✨ AI 번역</button>
+      <button role="tab" data-tab="t3">📋 검수 요청문</button>
+      <button role="tab" data-tab="t4">📚 보관함</button>
+      <button role="tab" data-tab="t5">✅ 보내기 전 점검</button>
+    </nav>
+
+    <!-- F1 상대방 카드 -->
+    <section id="t1" class="panel on">
+      <div id="c-empty"></div>
+      <div class="card">
+        <label>이름 <input id="c-name" placeholder="예: Emily Carter" autocomplete="off"></label>
+        <div class="field"><span class="lab">관계</span><div id="c-relation" class="radios"></div></div>
+        <div class="field"><span class="lab">언어</span><div id="c-language" class="radios"></div></div>
+        <div class="field"><span class="lab">격식</span><div id="c-formality" class="radios"></div></div>
+        <button id="c-save" class="btn">저장</button>
+      </div>
+      <div id="c-msg"></div>
+      <div id="c-list"></div>
+    </section>
+
+    <!-- F2 AI 번역 · 다듬기 -->
+    <section id="t2" class="panel">
+      <label>한국어 원문 <textarea id="t-source" rows="5" placeholder="보낼 내용을 한국어로 써 보세요 (2000자까지)"></textarea></label>
+      <div id="t-who"></div>
+      <div class="field"><span class="lab">상황</span><div id="t-situation" class="radios"></div></div>
+      <p id="t-left" class="hint"></p>
+      <button id="t-go" class="btn primary">번역하기</button>
+      <div id="t-msg"></div>
+      <div id="t-out" hidden>
+        <label>결과 (직접 고칠 수 있어요) <textarea id="t-result" rows="6"></textarea></label>
+        <div id="t-verbose"></div>
+        <button id="t-save" class="btn">보관함에 저장</button>
+        <div id="t-saved"></div>
+      </div>
+    </section>
+
+    <!-- F3 검수 요청문 생성기 -->
+    <section id="t3" class="panel">
+      <p class="hint">AI 번역을 쓸 수 없을 때, ChatGPT 등에 그대로 붙여 넣을 요청문을 만들어요.</p>
+      <label>한국어 원문 <textarea id="r-source" rows="5"></textarea></label>
+      <div id="r-who"></div>
+      <div class="field"><span class="lab">상황</span><div id="r-situation" class="radios"></div></div>
+      <button id="r-go" class="btn primary">요청문 만들기</button>
+      <div id="r-msg"></div>
+      <div id="r-out" hidden>
+        <pre id="r-text"></pre>
+        <button id="r-copy" class="btn">복사하기</button> <span id="r-copied" class="hint"></span>
+      </div>
+    </section>
+
+    <!-- F4 검수 완료 문장 보관함 -->
+    <section id="t4" class="panel">
+      <details id="p-box" class="card">
+        <summary>✍️ 문장 직접 저장하기</summary>
+        <label>최종 문장 <textarea id="p-text" rows="3"></textarea></label>
+        <label>한국어 원문 (없어도 돼요) <input id="p-source" autocomplete="off"></label>
+        <div id="p-who"></div>
+        <div class="field"><span class="lab">상황</span><div id="p-situation" class="radios"></div></div>
+        <button id="p-save" class="btn">보관함에 저장</button>
+        <div id="p-msg"></div>
+      </details>
+      <div class="row2">
+        <label>단어로 찾기 <input id="q-word" placeholder="예: meeting, 회의" autocomplete="off"></label>
+        <label>상대로 찾기 <select id="q-contact"></select></label>
+      </div>
+      <div id="p-list"></div>
+    </section>
+
+    <!-- F5 보내기 전 점검 (이메일) -->
+    <section id="t5" class="panel">
+      <label>제목 <input id="e-subject" autocomplete="off"></label>
+      <label>본문 <textarea id="e-body" rows="7"></textarea></label>
+      <div id="e-who"></div>
+      <button id="e-go" class="btn primary">점검하기</button>
+      <div id="e-msg"></div>
+    </section>
+
+    <footer>BridgeNote · 1인 스타트업 수업 과제 · 가상 데이터로 시연해요</footer>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

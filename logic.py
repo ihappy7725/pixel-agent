@@ -249,14 +249,18 @@ def _id_number(row):
     return int(s) if s.isdigit() else -1
 
 
-def load_phrases(path):
-    """보관함 문장 — 최신이 위 (같은 날이면 나중에 저장한 것이 위)."""
-    rows = read_rows(path)
+def sort_phrases(rows):
+    """최신이 위 (같은 날이면 나중에 저장한 것이 위)."""
     return sorted(rows, key=lambda r: (r.get("date") or "", _id_number(r)), reverse=True)
 
 
-def add_phrase(path, text, language, situation, contact_id, source_ko, today):
-    """문장을 보관함에 저장해요. 성공하면 None, 저장하지 않았으면 안내 문장."""
+def load_phrases(path):
+    """보관함 문장 — 최신이 위 (같은 날이면 나중에 저장한 것이 위)."""
+    return sort_phrases(read_rows(path))
+
+
+def validate_phrase(text, language, situation):
+    """보관함에 넣을 문장 검사 (PRD F4 기준 1 · 2 · 6). 문제가 있으면 안내 문장, 없으면 None."""
     text = (text or "").strip()
     if not text:
         return MSG_EMPTY_PHRASE
@@ -266,6 +270,15 @@ def add_phrase(path, text, language, situation, contact_id, source_ko, today):
         return MSG_PICK_LANGUAGE
     if situation not in dict(SITUATIONS):
         return MSG_PICK_SITUATION
+    return None
+
+
+def add_phrase(path, text, language, situation, contact_id, source_ko, today):
+    """문장을 보관함에 저장해요. 성공하면 None, 저장하지 않았으면 안내 문장."""
+    error = validate_phrase(text, language, situation)
+    if error:
+        return error
+    text = text.strip()
     row = {
         "id": next_id(read_rows(path)),
         "date": today.isoformat(),
@@ -356,3 +369,41 @@ def check_email(subject, body, language, relation, rules):
         result["casual"] = [w for w in words.get("casual", []) if contains_word(body, w, language)]
     result["ready"] = not result["missing"] and not result["casual"] and not result["note"]
     return result
+
+
+# ---------------------------------------------------------------- 웹 배포판 — AI 번역 횟수 제한 (PRD 7장)
+
+VISITOR_DAILY_LIMIT = 3   # 방문자 한 명당 하루 AI 번역 횟수
+SITE_DAILY_LIMIT = 50     # 사이트 전체 하루 AI 번역 횟수 (무료 한도 보호)
+MSG_LIMIT_VISITOR = "오늘 쓸 수 있는 AI 번역 3번을 다 썼어요 — 검수 요청문으로 이어서 해 보세요"
+MSG_LIMIT_SITE = "오늘 사이트 전체 AI 번역 한도를 다 썼어요 — 검수 요청문으로 이어서 해 보세요"
+
+
+class DailyQuota:
+    """하루 단위로 AI 번역 횟수를 세요. 날짜가 바뀌면 처음부터 다시 세요."""
+
+    def __init__(self, per_visitor=VISITOR_DAILY_LIMIT, per_site=SITE_DAILY_LIMIT):
+        self.per_visitor, self.per_site = per_visitor, per_site
+        self.day, self.site, self.visitors = None, 0, {}
+
+    def _roll(self, today):
+        if self.day != today:
+            self.day, self.site, self.visitors = today, 0, {}
+
+    def check(self, visitor, today):
+        """더 쓸 수 있으면 None, 아니면 안내 문장."""
+        self._roll(today)
+        if self.visitors.get(visitor, 0) >= self.per_visitor:
+            return MSG_LIMIT_VISITOR
+        if self.site >= self.per_site:
+            return MSG_LIMIT_SITE
+        return None
+
+    def use(self, visitor, today):
+        self._roll(today)
+        self.visitors[visitor] = self.visitors.get(visitor, 0) + 1
+        self.site += 1
+
+    def left(self, visitor, today):
+        self._roll(today)
+        return max(0, min(self.per_visitor - self.visitors.get(visitor, 0), self.per_site - self.site))

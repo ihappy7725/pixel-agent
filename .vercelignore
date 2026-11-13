@@ -1,0 +1,21 @@
+# 배포에 필요 없는 것 (내 컴퓨터용 Streamlit 앱 · 기록 · 직원 · 문서)
+.env
+.env.*
+data/
+docs/
+tests/
+pixel-office/
+assets/
+.claude/
+.agents/
+.vscode/
+__pycache__/
+.pytest_cache/
+app.py
+theme.css
+office_view.html
+make_sample.py
+dev_server.py
+CLAUDE.md
+STAFF.md
+PRD.md

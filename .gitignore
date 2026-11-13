@@ -8,3 +8,15 @@ data/backup/
 # 파이썬 · 테스트 임시 파일
 __pycache__/
 .pytest_cache/
+
+# 웹 배포판
+.vercel/
+.agents/
+.claude/skills/developing-with-streamlit
+
+# 내 기록 (공개 저장소에 올리지 않음 — 배포판은 seed/ 의 가상 데이터를 써요)
+data/
+
+# 맥 · 비밀 파일 변형
+.DS_Store
+.env.*

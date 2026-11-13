@@ -30,6 +30,12 @@
         "8602"
       ],
       "port": 8602
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["dev_server.py"],
+      "port": 3000
     }
   ]
 }
